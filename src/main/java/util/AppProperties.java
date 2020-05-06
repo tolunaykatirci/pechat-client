@@ -18,7 +18,4 @@ public class AppProperties {
 
     private String serverIp;
     private int serverPort;
-
-    private String peerIp;
-    private int peerPort;
 }

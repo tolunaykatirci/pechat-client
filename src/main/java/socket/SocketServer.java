@@ -33,10 +33,10 @@ public class SocketServer implements Runnable{
                 clientSocket = this.serverSocket.accept();
             } catch (IOException e) {
                 if(isStopped()) {
-                    System.out.println("Server Stopped.") ;
+                    System.out.println("[INFO] Server Stopped.") ;
                     return;
                 }
-                throw new RuntimeException("Error accepting client connection", e);
+                throw new RuntimeException("[ERROR] Error accepting client connection", e);
             }
 
             // handle request in background
@@ -50,7 +50,7 @@ public class SocketServer implements Runnable{
         try {
             this.serverSocket.close();
         } catch (IOException e) {
-            throw new RuntimeException("Error closing server", e);
+            throw new RuntimeException("[ERROR] Error closing server", e);
         }
     }
 
@@ -62,9 +62,9 @@ public class SocketServer implements Runnable{
     private void openServerSocket() {
         try {
             this.serverSocket = new ServerSocket(this.serverPort);
-            System.out.println("Server started at port: " + this.serverPort);
+            System.out.println("[INFO] Server started at port: " + this.serverPort);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot open port "+ this.serverPort, e);
+            throw new RuntimeException("[ERROR] Cannot open port "+ this.serverPort, e);
         }
     }
 }

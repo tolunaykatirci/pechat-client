@@ -9,7 +9,6 @@ public class AppConfig {
     public static AppProperties appProperties;
     public static String projectPath;
 
-
     public static void getApplicationProperties() {
         try {
             // read properties file
@@ -45,8 +44,6 @@ public class AppConfig {
             appProperties.setCertificatePath(properties.getProperty("client.security.certificate.path"));
             appProperties.setServerIp(properties.getProperty("client.security.server_ip"));
             appProperties.setServerPort(Integer.parseInt(properties.getProperty("client.security.server_port")));
-            appProperties.setPeerIp(properties.getProperty("client.security.peer_ip"));
-            appProperties.setPeerPort(Integer.parseInt(properties.getProperty("client.security.peer_port")));
 
         } catch (IOException e) {
             e.printStackTrace();

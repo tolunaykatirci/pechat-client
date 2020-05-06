@@ -1,7 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c42ab6ad-452b-40bd-846c-2b612089898d" name="Default Changelist" comment="" />
+    <list default="true" id="c42ab6ad-452b-40bd-846c-2b612089898d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/connection/MessageReceiver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/connection/MessageSender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/security/AESManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/security/CertificateManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/security/KeyManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/security/MACManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/security/SecurityParameters.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/socket/ServerManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/util/AppParameters.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/util/PeerModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alice.cert" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alice.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alice.pvt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bob.cert" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bob.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bob.pvt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/PeFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/test.form" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/gui/test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/security/CipherHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/security/CipherManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/security/SecurityHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/socket/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connection/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connection/handler/MessageHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/MessageRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connection/request/MessageRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/MessageSenderThread.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/ServerRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/SocketServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/socket/SocketServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/handler/HandshakeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connection/handler/HandshakeHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socket/request/HandshakeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connection/request/HandshakeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/AppProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/AppProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/CommunicationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/MenuThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/AppMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config2.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Application.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/config2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config2.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/gui/PeFrame.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/gui/test.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/security/CipherHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/security/SecurityHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/socket/ClientHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/Message.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/MessageHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/MessageRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/MessageSenderThread.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/ServerRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/SocketServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/socket/SocketServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/handler/HandshakeHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socket/request/HandshakeRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/AppConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/AppConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/AppProperties.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/AppProperties.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/CommunicationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/MenuThread.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,10 +69,13 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
@@ -23,6 +85,9 @@
     </option>
   </component>
   <component name="ProjectId" id="1bGobczDcQn8cJkXGdkfb91R0Vp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -89,7 +154,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588267863230</updated>
-      <workItem from="1588267867599" duration="50987000" />
+      <workItem from="1588267867599" duration="50991000" />
+      <workItem from="1588631488309" duration="36983000" />
     </task>
     <servers />
   </component>
@@ -105,26 +171,34 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="178" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588307201498" />
-    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1588377231022">
+    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1588734800373">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1588377231022" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1588379511957">
+    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1588734800373" />
+    <state x="605" y="449" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1588656076828">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588379511957" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1588379511957">
+    <state x="605" y="449" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588656076828" />
+    <state x="761" y="409" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1588656078788">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588379511957" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1588379511957">
+    <state x="761" y="409" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1920.1040@0.0.1920.1040" timestamp="1588656078788" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1588741655317">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588379511957" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1588379511957">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588741655317" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1588741655317">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588379511957" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588741655317" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1588741655317">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588741655317" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1588741655317">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588741655317" />
     <state x="463" y="165" key="SettingsEditor" timestamp="1588367028527">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

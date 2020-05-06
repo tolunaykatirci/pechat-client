@@ -1,41 +1,34 @@
-import security.SecurityHelper;
-import socket.MessageRequest;
+import security.CertificateManager;
+import security.KeyManager;
 import socket.SocketServer;
 import util.AppConfig;
-import util.CommunicationController;
-import util.MenuThread;
+import util.AppMenu;
+import util.AppParameters;
 import util.UserInputReader;
-
-import java.util.Scanner;
 
 public class Application {
     public static void main(String[] args) {
         // get application properties from file
         AppConfig.getApplicationProperties();
 
-        // check server private/public key
-        SecurityHelper.initialKeyPairCheck();
+        // check client private/public key
+        boolean bool = KeyManager.initialKeyPairCheck();
+        if (!bool)
+            System.exit(-2);
+
+        // check client certificate
+        bool = CertificateManager.initialCertificateCheck();
+        if (!bool)
+            System.exit(-2);
 
         // run socket server
         runSocketServer();
 
-//        String serverPub = new ServerRequest("serverPub").run();
-//        System.out.println(serverPub);
+        AppParameters.reader = new UserInputReader();
+        new Thread(AppParameters.reader).start();
 
-//        HandshakeRequestThread client = new HandshakeRequestThread();
-//        new Thread(client).start();
-
-
-        CommunicationController.reader = new UserInputReader();
-        new Thread(CommunicationController.reader).start();
-
-        //new PeFrame();
-        System.out.println("Welcome to PeChat");
-        MenuThread menu = new MenuThread();
+        AppMenu menu = new AppMenu("*** Welcome to PeChat ***");
         new Thread(menu).start();
-
-
-
 
     }
 

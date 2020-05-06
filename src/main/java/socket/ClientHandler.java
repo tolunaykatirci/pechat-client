@@ -1,6 +1,7 @@
 package socket;
 
-import util.CommunicationController;
+import connection.handler.MessageHandler;
+import util.AppParameters;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,41 +26,51 @@ public class ClientHandler implements Runnable {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            System.out.println("Client IP: " + clientSocket.getLocalAddress());
+            System.out.println("Client IP: " + clientSocket.getLocalAddress().getHostAddress());
 
             String line = in.readLine();
 
             // parse request
-            parse(line, clientSocket.getLocalAddress().toString());
+            parse(line);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void parse(String allData, String ip) throws IOException {
+    private void parse(String allData) throws IOException {
         if (allData.startsWith("hello")) {
             // register a new client
             try {
-                String clientCert = allData.substring(5);
+                String[] splitted = allData.split(":");
 
-                if (!CommunicationController.inCommunication){
+                String peerUserName = splitted[1];
+                String peerCert = splitted[2];
+
+                if (!AppParameters.inCommunication){
                     // handle request in background
                     System.out.println("[RECEIVED] " + allData);
-                    new Thread(new MessageHandler(clientSocket, in, out, clientCert)).start();
+                    new Thread(new MessageHandler(clientSocket, in, out, peerUserName, peerCert)).start();
                 } else {
                     // in another communication
                     respond("busy");
+                    System.out.println("[SENT] busy");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 respond("error");
+                System.out.println("[SENT] error");
             }
+        } else {
+            // unexpected message
+            System.out.println("[INFO] unexpected request");
+            respond("error");
+            System.out.println("[SENT] error");
         }
     }
 
     private void respond(String res) throws IOException {
-        out.write(res);
+        out.println(res);
         out.flush();
         out.close();
         // close close
