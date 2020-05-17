@@ -18,9 +18,12 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 @Getter
 public class HandshakeRequest {
+
+    private static Logger log = AppConfig.getLogger(HandshakeRequest.class.getName());
 
     private BufferedReader in;
     private PrintWriter out;
@@ -49,10 +52,10 @@ public class HandshakeRequest {
         String helloMessage = "hello:" + AppConfig.appProperties.getUserName() + ":" + ownCertificate;
         out.println(helloMessage);
         out.flush();
-        System.out.println("[SENT] " + helloMessage);
+        log.info("[SENT]" + helloMessage);
 
         String response = in.readLine();
-        System.out.println("[RECEIVED] " + response);
+        log.info("[RECEIVED] " + response);
 
         if (response.equals("error")){
             return -1;
@@ -60,56 +63,76 @@ public class HandshakeRequest {
             return -2;
         }
 
-        String nonce = response.substring(0, 2);    // random number
-        peerCertificateB64 = response.substring(2);  // peer certificate Base64
-        System.out.println("[INFO] Nonce: " + nonce);
-        System.out.println("[INFO] Peer Certificate Base64: " + peerCertificateB64);
+        String[] splt = response.split(":");
+        String nonce = splt[0];   // random number
+        peerCertificateB64 = splt[1];  // peer certificate Base64
+        log.info("Nonce: " + nonce);
+        log.info("Peer Certificate Base64: " + peerCertificateB64);
 
         // get peer public key
         byte [] peerCertBytes = Base64.getDecoder().decode(peerCertificateB64);
         X509Certificate peerCertificate = CertificateManager.convertToCertificate(peerCertBytes);
         peerCertificate.verify(SecurityParameters.serverPublicKey);
+        log.info("Peer certificate verified");
         peerPublicKey = peerCertificate.getPublicKey();
-        System.out.println("[INFO] Peer public key created");
+        log.info("Peer public key created");
 
         // sign nonce with
         String signatureB64 = CipherManager.sign(SecurityParameters.ownPrivateKey, nonce);
-        System.out.println("[INFO] Nonce signed");
+        log.info("Nonce signed");
 
         // send signed nonce to peer
         out.println(signatureB64);
         out.flush();
-        System.out.println("[SENT] " + signatureB64);
+        log.info("[SENT]" + signatureB64);
 
         // get response
-        String ack = in.readLine();
-        System.out.println("[RECEIVED] " + ack);
+        String ackB64 = in.readLine();
+        log.info("[RECEIVED] " + ackB64);
+        String ack = CipherManager.decrypt(SecurityParameters.ownPrivateKey, ackB64);
 
         // if ack is wrong, create exception
-        assert !ack.equals("ack");
+        assert ack != null;
+        assert !ack.equals("acknowledgement");
+        log.info("acknowledgement successfully verified");
 
         // Generating Keys.
         ownMasterSecret = KeyManager.generateMasterSecret();
-        System.out.println("[INFO] Own Master secret generated: " + ownMasterSecret);
+        log.info("Own Master secret generated: " + ownMasterSecret);
         String encryptedMasterSecretB64 = CipherManager.encrypt(peerPublicKey, ownMasterSecret);
-        System.out.println("[INFO] Own Master secret encrypted with peer public key");
+        log.info("Own Master secret encrypted with peer public key");
 
         out.println(encryptedMasterSecretB64);
         out.flush();
-        System.out.println("[SENT] " + encryptedMasterSecretB64);
+        log.info("[SENT]" + encryptedMasterSecretB64);
 
         // Same operation for peer master secret
         peerMasterSecret = KeyManager.generateMasterSecret();
-        System.out.println("[INFO] Peer Master secret generated: " + peerMasterSecret);
+        log.info("Peer Master secret generated: " + peerMasterSecret);
 
         String peerEncryptedMasterSecretB64 = CipherManager.encrypt(peerPublicKey, peerMasterSecret);
-        System.out.println("[INFO] Peer Master secret encrypted with peer public key");
+        log.info("Peer Master secret encrypted with peer public key");
 
         out.println(peerEncryptedMasterSecretB64);
         out.flush();
-        System.out.println("[SENT] " + peerEncryptedMasterSecretB64);
+        log.info("[SENT]" + peerEncryptedMasterSecretB64);
 
-        System.out.println("[INFO] Handshake operation successful");
+
+        String handshakeFinishedEncryptedB64 = in.readLine();
+        log.info("[RECEIVED]" + handshakeFinishedEncryptedB64);
+        String hf = CipherManager.decrypt(SecurityParameters.ownPrivateKey, handshakeFinishedEncryptedB64);
+
+        assert hf != null;
+        assert !hf.equals("handshakeFinished");
+        log.info("Handshake finish operation came from peer");
+
+        String handshakeFinished = "handshakeFinished";
+        String handshakeFinishedEncrypted = CipherManager.encrypt(peerPublicKey, handshakeFinished);
+        out.println(handshakeFinishedEncrypted);
+        out.flush();
+        log.info("[SENT] " + handshakeFinishedEncrypted);
+
+        log.info("Handshake operation successful");
 
         return 0;
     }

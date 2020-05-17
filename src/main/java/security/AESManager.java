@@ -1,9 +1,14 @@
 package security;
 
+import util.AppConfig;
+
 import javax.crypto.Cipher;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 public class AESManager {
+
+    private static Logger log = AppConfig.getLogger(AESManager.class.getName());
 
     public static String encrypt(String message) {
         try {
@@ -11,13 +16,13 @@ public class AESManager {
             cipher.init(Cipher.ENCRYPT_MODE, SecurityParameters.ownAesKey, SecurityParameters.ownIvKey);
 
             String encryptedMessageB64 = Base64.getEncoder().encodeToString(cipher.doFinal(message.getBytes()));
-            System.out.println("[INFO] Message AES Encrypted: " + encryptedMessageB64);
+            log.info("Message AES Encrypted: " + encryptedMessageB64);
 
             return encryptedMessageB64;
         }
         catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("[ERROR] Error on AES encryption");
+            log.warning(e.getMessage());
+            log.warning("[ERROR] Error on AES encryption");
         }
         return null;
     }
@@ -29,13 +34,13 @@ public class AESManager {
             cipher.init(Cipher.DECRYPT_MODE, SecurityParameters.peerAesKey, SecurityParameters.peerIvKey);
 
             String decryptedMessage = new String(cipher.doFinal(encryptedMessage));
-            System.out.println("[INFO] Message AES Decrypted: " + decryptedMessage);
+            log.info("Message AES Decrypted: " + decryptedMessage);
 
             return decryptedMessage;
         }
         catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("[ERROR] Error on AES decryption");
+            log.warning(e.getMessage());
+            log.warning("[ERROR] Error on AES decryption");
         }
         return null;
     }

@@ -6,10 +6,19 @@ import util.AppMenu;
 import util.AppParameters;
 import util.UserInputReader;
 
+import java.util.logging.Logger;
+
 public class Application {
+
+    private static Logger log = Logger.getLogger(Application.class.getName());
+
     public static void main(String[] args) {
         // get application properties from file
         AppConfig.getApplicationProperties();
+        log.addHandler(AppConfig.logHandler);
+        log.setUseParentHandlers(false);
+
+        log.info("Application properties successfully loaded");
 
         // check client private/public key
         boolean bool = KeyManager.initialKeyPairCheck();

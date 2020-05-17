@@ -4,9 +4,11 @@ import connection.request.MessageRequest;
 import socket.ServerManager;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class AppMenu implements Runnable {
 
+    private static Logger log = AppConfig.getLogger(AppMenu.class.getName());
 
     public AppMenu(String initialMessage) {
         if (initialMessage != null)
@@ -22,13 +24,13 @@ public class AppMenu implements Runnable {
         int input = getInput(2);
         if (input == -1){
             // menu interrupted
-            System.out.println("[INFO] Menu thread interrupted");
+            log.info("Menu thread interrupted");
         } else if (input == 1){
             System.out.println("Select a user to chat");
             List<PeerModel> peers = ServerManager.getPeers();
 
             if (peers==null || peers.size() == 0) {
-                System.out.println("[ERROR] Could not get any user from server");
+                log.warning("[ERROR] Could not get any user from server");
                 System.exit(-2);
             }
 
@@ -39,7 +41,7 @@ public class AppMenu implements Runnable {
             input = getInput(peers.size()+1);
             if (input == -1){
                 // menu interrupted
-                System.out.println("[INFO] Menu thread interrupted");
+                log.info("Menu thread interrupted");
             } else if (input == peers.size()+1) {
                 // return to menu
                 AppMenu menu = new AppMenu(null);
@@ -61,12 +63,12 @@ public class AppMenu implements Runnable {
         while (!AppParameters.inCommunication) {
             if (AppParameters.reader != null && AppParameters.reader.isReady()) {
                 String userInput = AppParameters.reader.readLine();
-                System.out.println("[INFO] Menu input: "+userInput);
+                log.info("Menu input: "+userInput);
                 int option;
                 try {
                     option = Integer.parseInt(userInput);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.warning(e.getMessage());
                     System.out.println("Please enter only integer!");
                     continue;
                 }
@@ -80,7 +82,7 @@ public class AppMenu implements Runnable {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.warning(e.getMessage());
                 }
             }
         }

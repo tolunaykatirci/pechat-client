@@ -7,30 +7,44 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 public class CertificateManager {
 
+    private static Logger log = AppConfig.getLogger(CertificateManager.class.getName());
 
     public static boolean initialCertificateCheck() {
         File certFile = new File(AppConfig.appProperties.getCertificatePath());
         if(certFile.exists()){
             // load certificate
             SecurityParameters.ownCertificate = loadCertificate(AppConfig.appProperties.getCertificatePath());
-            System.out.println("[INFO] Certificate loaded from file");
+            log.info("Certificate loaded from file");
         } else {
             // get certificate from server
             String certificateB64 = ServerManager.register();
             if (certificateB64 != null){
                 SecurityParameters.ownCertificate = convertToCertificate(Base64.getDecoder().decode(certificateB64));
-                System.out.println("[INFO] Registered to server");
+                try {
+                    SecurityParameters.ownCertificate.verify(SecurityParameters.serverPublicKey);
+                    log.info("Certificate Verified");
+                } catch (Exception e) {
+                    log.warning("Certificate could not verify");
+                    log.warning(e.getMessage());
+                }
+
+                log.info("Registered to server");
                 saveCertificate(SecurityParameters.ownCertificate, AppConfig.appProperties.getCertificatePath());
             } else {
-                System.out.println("[ERROR] Could not register to server");
+                log.warning("[ERROR] Could not register to server");
                 return false;
             }
         }
@@ -43,9 +57,9 @@ public class CertificateManager {
             byte[] buf = cert.getEncoded();
             out.write(buf);
             out.close();
-            System.out.println("[INFO] Certificate saved to: " + filePath);
+            log.info("Certificate saved to: " + filePath);
         } catch (IOException | CertificateEncodingException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
     }
 
@@ -56,7 +70,7 @@ public class CertificateManager {
             InputStream in = new ByteArrayInputStream(bytes);
             cert = (X509Certificate)certFactory.generateCertificate(in);
         } catch (CertificateException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return cert;
     }
@@ -72,7 +86,7 @@ public class CertificateManager {
 
             cert = (X509Certificate)certFactory.generateCertificate(in);
         } catch (IOException | CertificateException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return cert;
     }

@@ -7,6 +7,7 @@ import security.CipherManager;
 import security.MACManager;
 import security.SecurityParameters;
 import connection.MessageSender;
+import util.AppConfig;
 import util.AppParameters;
 import util.AppMenu;
 import util.PeerModel;
@@ -22,8 +23,11 @@ import java.net.Socket;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 public class MessageRequest implements Runnable, Message {
+
+    private static Logger log = AppConfig.getLogger(MessageRequest.class.getName());
 
     private Socket clientSocket = null;
     private PeerModel peer;
@@ -43,10 +47,9 @@ public class MessageRequest implements Runnable, Message {
             clientSocket = new Socket(peer.getIp(), peer.getPort());
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out  = new PrintWriter(clientSocket.getOutputStream(), true);
-            System.out.println("[INFO] Connection established with: " + peer.getUserName());
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("[ERROR] Connection refused: " + peer.getUserName());
+            log.warning(e.getMessage());
+            log.warning("[ERROR] Connection refused: " + peer.getUserName());
             endCommunication("Could not connect to user");
             return;
         }
@@ -72,7 +75,7 @@ public class MessageRequest implements Runnable, Message {
             ownMasterSecret = handshake.getOwnMasterSecret();
             peerMasterSecret = handshake.getPeerMasterSecret();
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException | IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | IOException | CertificateException | SignatureException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
             closeConnection(null);
             return;
         }
@@ -89,14 +92,18 @@ public class MessageRequest implements Runnable, Message {
             SecurityParameters.peerMacKey = new SecretKeySpec(Base64.getDecoder().decode(peerKeysB64[1]), SecurityParameters.macEncryptionMethod);
             SecurityParameters.peerAesKey = new SecretKeySpec(Base64.getDecoder().decode(peerKeysB64[2]), SecurityParameters.aesKeyMethod);
 
-            System.out.println("[INFO] AES keys parsed");
+            log.info("AES keys parsed");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
             // close connections
             closeConnection(null);
-            System.out.println("[ERROR] Connection closed -1");
+            log.warning("[ERROR] Connection closed -1");
         }
+
+        log.info("Connection established with: " + peer.getUserName());
+        System.out.println("Connection established with: " + peer.getUserName());
+        System.out.println("Please type !exit to end connection");
 
         MessageSender ms = new MessageSender(this, out, peer.getUserName());
         new Thread(ms).start();
@@ -113,7 +120,7 @@ public class MessageRequest implements Runnable, Message {
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         if (message == null)
             endCommunication("Connection closed");

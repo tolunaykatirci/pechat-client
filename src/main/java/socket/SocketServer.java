@@ -1,10 +1,15 @@
 package socket;
 
+import util.AppConfig;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public class SocketServer implements Runnable{
+
+    private static Logger log = AppConfig.getLogger(SocketServer.class.getName());
 
     private int serverPort;
     private ServerSocket serverSocket = null;
@@ -33,7 +38,7 @@ public class SocketServer implements Runnable{
                 clientSocket = this.serverSocket.accept();
             } catch (IOException e) {
                 if(isStopped()) {
-                    System.out.println("[INFO] Server Stopped.") ;
+                    log.info("[INFO] Server Stopped.");
                     return;
                 }
                 throw new RuntimeException("[ERROR] Error accepting client connection", e);
@@ -62,7 +67,7 @@ public class SocketServer implements Runnable{
     private void openServerSocket() {
         try {
             this.serverSocket = new ServerSocket(this.serverPort);
-            System.out.println("[INFO] Server started at port: " + this.serverPort);
+            log.info("Server started at port: " + this.serverPort);
         } catch (IOException e) {
             throw new RuntimeException("[ERROR] Cannot open port "+ this.serverPort, e);
         }

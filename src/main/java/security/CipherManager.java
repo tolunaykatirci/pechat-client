@@ -1,16 +1,20 @@
 package security;
 
+import util.AppConfig;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 import static security.SecurityParameters.keyEncryptionMethod;
 
 public class CipherManager {
 
+    private static Logger log = AppConfig.getLogger(CipherManager.class.getName());
 
     public static String encrypt(PublicKey publicKey, String message) {
         try {
@@ -19,12 +23,12 @@ public class CipherManager {
 
             byte[] encryptedMessage = encrypt.doFinal(message.getBytes());
             String encryptedMessageB64 = Base64.getEncoder().encodeToString(encryptedMessage);
-            System.out.println("[INFO] Message Key encrypted: " + encryptedMessageB64);
+            log.info("Message Key encrypted: " + encryptedMessageB64);
 
             return encryptedMessageB64;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException e) {
-            e.printStackTrace();
-            System.out.println("[ERROR] Error on Key encryption");
+            log.warning(e.getMessage());
+            log.warning("[ERROR] Error on Key encryption");
         }
         return null;
     }
@@ -36,12 +40,12 @@ public class CipherManager {
 
             byte[] encryptedMessage = Base64.getDecoder().decode(encryptedMessageB64);
             String decryptedMessage = new String(decrypt.doFinal(encryptedMessage));
-            System.out.println("[INFO] Message Key decrypted: " + decryptedMessage);
+            log.info("Message Key decrypted: " + decryptedMessage);
 
             return decryptedMessage;
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
-            System.out.println("[ERROR] Error on Key decryption");
+            log.warning(e.getMessage());
+            log.warning("[ERROR] Error on Key decryption");
         }
         return null;
     }
@@ -55,13 +59,13 @@ public class CipherManager {
             byte[] signedMessage = sign.sign();
 
             String signedMessageB64 = Base64.getEncoder().encodeToString(signedMessage);
-            System.out.println("[INFO] Message signed: " + signedMessageB64);
+            log.info("Message signed: " + signedMessageB64);
 
             return signedMessageB64;
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-            e.printStackTrace();
-            System.out.println("[ERROR] Error on message sign");
+            log.warning(e.getMessage());
+            log.warning("[ERROR] Error on message sign");
         }
 
         return null;
@@ -78,15 +82,15 @@ public class CipherManager {
 
             boolean res = sign.verify(signedData);
             if (res)
-                System.out.println("[INFO] Message verified");
+                log.info("Message verified");
             else
-                System.out.println("[ERROR] Error on message verify");
+                log.warning("[ERROR] Error on message verify");
 
             return res;
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-            e.printStackTrace();
-            System.out.println("[ERROR] Error on message verify");
+            log.warning(e.getMessage());
+            log.warning("[ERROR] Error on message verify");
         }
 
         return false;

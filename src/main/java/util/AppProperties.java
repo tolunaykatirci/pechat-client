@@ -12,6 +12,7 @@ public class AppProperties {
 
     private int port;
     private String userName;
+    private String logFilePath;
     private String publicKeyPath;
     private String privateKeyPath;
     private String certificatePath;

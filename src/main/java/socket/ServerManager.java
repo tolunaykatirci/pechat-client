@@ -11,8 +11,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ServerManager {
+
+    private static Logger log = AppConfig.getLogger(ServerManager.class.getName());
 
     public static String getServerPublicKey(){
         String serverPublicKeyB64 = null;
@@ -24,10 +27,10 @@ public class ServerManager {
 
             out.println("serverPub");
             out.flush();
-            System.out.println("[SENT] serverPub");
+            log.info("[SENT] serverPub");
 
             String response = in.readLine();
-            System.out.println("[RECEIVED] " + response);
+            log.info("[RECEIVED] " + response);
 
             if (response.equals("error"))
                 return null;
@@ -39,7 +42,7 @@ public class ServerManager {
             clientSocket.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return serverPublicKeyB64;
     }
@@ -61,10 +64,10 @@ public class ServerManager {
 
             out.println(request);
             out.flush();
-            System.out.println("[SENT] " + request);
+            log.info("[SENT] " + request);
 
             String response = in.readLine();
-            System.out.println("[RECEIVED] " + response);
+            log.info("[RECEIVED] " + response);
 
             if (response.equals("error"))
                 return null;
@@ -77,7 +80,7 @@ public class ServerManager {
             clientSocket.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return certificateB64;
     }
@@ -97,17 +100,15 @@ public class ServerManager {
 
             out.println(request);
             out.flush();
-            System.out.println("[SENT] " + request);
+            log.info("[SENT] " + request);
 
             String response = in.readLine();
-            System.out.println("[RECEIVED] " + response);
+            log.info("[RECEIVED] " + response);
 
             if (response.equals("error"))
                 return null;
 
 
-//            response = in.readLine();
-//            System.out.println("[RECEIVED] " + response);
             while (response != null && !response.equals("end")) {
                 String [] params = response.split(":");
 
@@ -121,7 +122,7 @@ public class ServerManager {
                     peers.add(peer);
 
                 response = in.readLine();
-                System.out.println("[RECEIVED] " + response);
+                log.info("[RECEIVED] " + response);
             }
 
             // close connections
@@ -130,7 +131,7 @@ public class ServerManager {
             clientSocket.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return peers;
     }

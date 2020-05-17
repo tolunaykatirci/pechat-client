@@ -7,6 +7,7 @@ import security.CipherManager;
 import security.MACManager;
 import security.SecurityParameters;
 import connection.MessageSender;
+import util.AppConfig;
 import util.AppParameters;
 import util.AppMenu;
 
@@ -20,8 +21,11 @@ import java.net.Socket;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 public class MessageHandler implements Runnable, Message {
+
+    private static Logger log = AppConfig.getLogger(MessageHandler.class.getName());
 
     private Socket clientSocket;
     private BufferedReader in;
@@ -53,9 +57,9 @@ public class MessageHandler implements Runnable, Message {
             peerMasterSecret = handshakeHandler.getPeerMasterSecret();
 
         } catch (IOException | CertificateException | NoSuchAlgorithmException | InvalidKeyException | SignatureException | NoSuchProviderException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
             closeConnection(null);
-            System.out.println("[INFO] connection closed -1");
+            log.info("connection closed -1");
             return;
         }
 
@@ -70,13 +74,17 @@ public class MessageHandler implements Runnable, Message {
             SecurityParameters.peerMacKey = new SecretKeySpec(Base64.getDecoder().decode(peerKeysB64[1]), SecurityParameters.macEncryptionMethod);
             SecurityParameters.peerAesKey = new SecretKeySpec(Base64.getDecoder().decode(peerKeysB64[2]), SecurityParameters.aesKeyMethod);
 
-            System.out.println("[INFO] AES keys parsed");
+            log.info("AES keys parsed");
         }  catch (Exception e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
             closeConnection(null);
-            System.out.println("[ERROR] Connection closed -1");
+            log.warning("Connection closed -1");
             return;
         }
+
+        log.info("Connection established with: " + peerUserName);
+        System.out.println("Connection established with: " + peerUserName);
+        System.out.println("Please type !exit to end connection");
 
         MessageSender ms = new MessageSender(this, out, peerUserName);
         new Thread(ms).start();
@@ -93,7 +101,7 @@ public class MessageHandler implements Runnable, Message {
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         if (message == null)
             endCommunication("Connection closed");

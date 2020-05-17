@@ -1,6 +1,7 @@
 package socket;
 
 import connection.handler.MessageHandler;
+import util.AppConfig;
 import util.AppParameters;
 
 import java.io.BufferedReader;
@@ -8,8 +9,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable {
+
+    private static Logger log = AppConfig.getLogger(ClientHandler.class.getName());
 
     private Socket clientSocket;
     private BufferedReader in;
@@ -26,7 +30,7 @@ public class ClientHandler implements Runnable {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            System.out.println("Client IP: " + clientSocket.getLocalAddress().getHostAddress());
+            log.info("Client IP: " + clientSocket.getLocalAddress().getHostAddress());
 
             String line = in.readLine();
 
@@ -34,7 +38,7 @@ public class ClientHandler implements Runnable {
             parse(line);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
     }
 
@@ -49,23 +53,23 @@ public class ClientHandler implements Runnable {
 
                 if (!AppParameters.inCommunication){
                     // handle request in background
-                    System.out.println("[RECEIVED] " + allData);
+                    log.info("[RECEIVED] " + allData);
                     new Thread(new MessageHandler(clientSocket, in, out, peerUserName, peerCert)).start();
                 } else {
                     // in another communication
                     respond("busy");
-                    System.out.println("[SENT] busy");
+                    log.info("[SENT] busy");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                log.warning(e.getMessage());
                 respond("error");
-                System.out.println("[SENT] error");
+                log.info("[SENT] error");
             }
         } else {
             // unexpected message
-            System.out.println("[INFO] unexpected request");
+            log.warning("Unexpected request");
             respond("error");
-            System.out.println("[SENT] error");
+            log.info("[SENT] error");
         }
     }
 
